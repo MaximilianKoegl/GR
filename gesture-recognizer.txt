@@ -1,0 +1,30 @@
+1.  Presenting gestures as clouds of points and matching them to point clouds of the templates. In detail, the algorithm finds for each point in the first cloud the closest one 
+    in the other cloud. The other point has not to be matched yet. This continues until all points are matched. The computed Euclidean distances are weighted with the confidence in each pair.
+    The first match is thus weighted with high confidence because it is the closest match. The following matches are weighted with less confidence.[1]
+
+2.  One advantage of the $P recognizer over the $1 recognizer is the recognition of multi-strokes, which is not possible for the only unistroke handling $1 recognizer.
+    The $P recognizer ignores stroke order and direction and represents gestures just as clouds of Points.[1]
+
+3.  The minimum matching distance, in the case of Vatavu, Anthony, and Wobbrock [1], can be described with the Nearest-Neighbor approach which delivers the template with the smallest distance to the candidate gesture.
+    The minimum matching distance between two point clouds represents a problem in combinatorial optimization called Assignment Problem [2]. This can be, in this case, transferred to an undirected graph via the construction of 2n vertexes which correspond to points of the two-point clouds and also the edges between those points which are weighted by the Euclidean distances between those points. With this, the vertices are split into two sets and the edges exist only between those sets. This is known as a bipartite graph [3]. To find the minimum weighted matching the Hungarian algorithm [4] is used classically. 
+
+
+
+[1] Radu-Daniel Vatavu, Lisa Anthony, and Jacob O. Wobbrock. 2012.
+    Gestures as point clouds: a $P recognizer for user interface prototypes.
+    In Proceedings of the 14th ACM international conference on Multimodal interaction
+    (ICMI '12). ACM, New York, NY, USA, 273-280. DOI: https://doi.org/10.1145/2388676.2388732
+
+
+[2] Burkard, R., Dell’Amico, M., and Martello, S. Assignment
+    Problems. Society for Industrial and Applied Mathematics,
+    Philadelphia, PA, USA, 2009.
+
+[3] Cormen, T. H., Leiserson, C. E., Rivest, R. L., and Stein,
+    C. Introduction to algorithms. MIT Press, Cambridge, MA,
+    USA, 2001.
+
+[4] Papadimitriou, C. H., and Steiglitz, K. Combinatorial
+    optimization: algorithms and complexity. Dover
+    Publications, Mineola, New York, USA, 1998.
+
