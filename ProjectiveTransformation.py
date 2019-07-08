@@ -1,3 +1,6 @@
+
+# code copied  from Hahn Jürgen (University of Regensburg) 
+
 from numpy import *
 from pylab import *
 
