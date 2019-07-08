@@ -1,5 +1,5 @@
 
-# code copied  from Hahn Jürgen (University of Regensburg) 
+# code modified and copied  from Hahn Jürgen (University of Regensburg) 
 
 from numpy import *
 from pylab import *

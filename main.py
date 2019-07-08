@@ -3,7 +3,6 @@ from pylab import *
 from PyQt5 import  QtGui, QtCore, QtWidgets
 from QDrawWidget import *
 from ProjectiveTransformation import ProjectiveTransformation as pt
-import execjs
 import pyqtgraph as pg
 import recognizer
 import template
@@ -52,7 +51,7 @@ class DrawingRecognizer(QtWidgets.QWidget):
     def training(self):
         name = self.training_name_input.text()
         text = "Trained.."
-        
+
         for x in self.recognition.templates:
             if x.name == name:
                 text = "Already trained.."
