@@ -6,13 +6,16 @@ from ProjectiveTransformation import ProjectiveTransformation as pt
 import pyqtgraph as pg
 import recognizer
 import template
+import wiimote
+import sys
 
 
 class DrawingRecognizer(QtWidgets.QWidget):
 
-    def __init__(self, draw_widget):
+    def __init__(self, draw_widget, btAddr):
         super(DrawingRecognizer, self).__init__()
         self.draw_widget = draw_widget
+        self.connectingWiimote(btAddr)
         self.initUI()
         self.recognition = recognizer.Recognizer()
         for i in template.templates:
@@ -29,7 +32,11 @@ class DrawingRecognizer(QtWidgets.QWidget):
         point = (point[0], 800-point[1])
         draw_widget.points = ([point])
 
-    
+    def connectingWiimote(self, btAddr):
+        addr = btAddr
+        name = None
+        self.wm = wiimote.connect(addr, name)
+
     def recognition(self):
         self.predicted_label.setText("Compiling..")
         QtGui.QGuiApplication.processEvents()
@@ -97,7 +104,7 @@ def main():
     win = QtGui.QMainWindow()
     win.setWindowTitle("AnalyzeWiimote")
     draw_widget = QDrawWidget()
-    drawing_recognizer = DrawingRecognizer(draw_widget)
+    drawing_recognizer = DrawingRecognizer(draw_widget, sys.argv[1])
 
     sys.exit(app.exec())
 
