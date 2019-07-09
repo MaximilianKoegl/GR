@@ -45,6 +45,7 @@ class DrawingRecognizer(QtWidgets.QWidget):
         while True:
             QtGui.QGuiApplication.processEvents()
             if self.wm.buttons["A"]:
+                print(self.wm.ir.get_state())
                 print("A")
             time.sleep(0.1)
 
