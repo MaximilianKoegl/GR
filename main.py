@@ -18,11 +18,11 @@ class DrawingRecognizer(QtWidgets.QWidget):
         self.connectingWiimote(btAddr)
         self.initUI()
         self.recognition = recognizer.Recognizer()
-        for i in template.templates:
+        self.setSavedTemplates()
+        self.gameInterface()
 
-            self.recognition.addTemplate(i)
-        transformation = pt()
         # just showing point on drawable
+        transformation = pt()
         A = 450, 690
         B = 500, 300
         C = 950, 300
@@ -36,6 +36,17 @@ class DrawingRecognizer(QtWidgets.QWidget):
         addr = btAddr
         name = None
         self.wm = wiimote.connect(addr, name)
+
+    def setSavedTemplates(self):
+        for i in template.templates:
+            self.recognition.addTemplate(i)
+
+    def gameInterface(self):
+        while True:
+            QtGui.QGuiApplication.processEvents()
+            if self.wm.buttons["A"]:
+                print("A")
+            time.sleep(0.1)
 
     def recognition(self):
         self.predicted_label.setText("Compiling..")
