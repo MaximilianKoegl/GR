@@ -19,10 +19,11 @@ class DrawingRecognizer(QtWidgets.QWidget):
         self.initUI()
         self.recognition = recognizer.Recognizer()
         self.setSavedTemplates()
+        self.transformation = pt()
+
         self.gameInterface()
 
         # just showing point on drawable
-        transformation = pt()
         A = 450, 690
         B = 500, 300
         C = 950, 300
@@ -42,11 +43,31 @@ class DrawingRecognizer(QtWidgets.QWidget):
             self.recognition.addTemplate(i)
 
     def gameInterface(self):
+        self.draw = False
+        drawing_points = []
         while True:
             QtGui.QGuiApplication.processEvents()
             if self.wm.buttons["A"]:
-                print(self.wm.ir.get_state())
+                self.draw = not self.draw
                 print("A")
+            if self.draw:
+                state = self.wm.ir.get_state()
+                if len(state) == 4:
+                    A = (state[3]['x'], state[3]['y'])
+                    B = (state[0]['x'], state[0]['y'])
+                    C = (state[1]['x'], state[1]['y'])
+                    D = (state[2]['x'], state[2]['y'])
+                    scoords = [A, B, C, D]
+
+                    point = self.transformation.getActualCoordinates(scoords)
+                    point = (point[0], point[1])
+                    drawing_points.append(point)
+                    print(point)
+                    self.draw_widget.points = (drawing_points)
+                    self.draw_widget.update()
+            else: 
+                drawing_points = []
+
             time.sleep(0.1)
 
     def recognition(self):

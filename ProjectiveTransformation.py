@@ -35,8 +35,8 @@ class ProjectiveTransformation():
         return identity_to_source
 
     def computeIdentityToDestination(self):
-        DESTINATION_SCREEN_WIDTH = 1280
-        DESTINATION_SCREEN_HEIGHT = 720
+        DESTINATION_SCREEN_WIDTH = 800
+        DESTINATION_SCREEN_HEIGHT = 800
 
         A2 = 0, DESTINATION_SCREEN_HEIGHT
         B2 = 0, 0
