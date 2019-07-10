@@ -1,5 +1,7 @@
 
-# code modified and copied  from Hahn Jürgen (University of Regensburg) 
+# using code from Hahn, Jürgen (University of Regensburg)
+# based on: https://math.stackexchange.com/questions/296794/finding-the-transform-matrix-from-4-projected-points-with-javascript
+# and modified by Jan Rankenhohn and Maximilian Kögl
 
 from numpy import *
 from pylab import *
@@ -77,7 +79,7 @@ class ProjectiveTransformation():
 
         return (x, y)
 
-    def getActualCoordinates(self, input):
-        identity_to_source = self.computeIdentityToSource(input)
+    def getActualCoordinates(self, scoords):
+        identity_to_source = self.computeIdentityToSource(scoords)
         return self.computeActualCoordinates(self.identity_to_destination, identity_to_source)
 

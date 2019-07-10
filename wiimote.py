@@ -441,7 +441,7 @@ class IRCam(object):
         self._state = []
         self._callbacks = []
         self._mode = self.MODE_EXTENDED
-        self._sensitivity = 3
+        self._sensitivity = 5
         self.set_mode_sensitivity(self._mode, self._sensitivity)
 
     def __len__(self):

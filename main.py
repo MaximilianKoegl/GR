@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# coding: utf-8
+# GUI from Maximilian Kögl
+# implementation of other work by Jan Rankenhohn, Maximilian Kögl
+
 from numpy import *
 from pylab import *
 from PyQt5 import  QtGui, QtCore, QtWidgets
@@ -21,18 +26,10 @@ class DrawingRecognizer(QtWidgets.QWidget):
         self.setSavedTemplates()
         self.transformation = pt()
 
+        # start WiiControler recognition
         self.gameInterface()
 
-        # just showing point on drawable
-        A = 450, 690
-        B = 500, 300
-        C = 950, 300
-        D = 900, 700
-        scoords = [A, B, C, D]
-        point = transformation.getActualCoordinates(scoords)
-        point = (point[0], 800-point[1])
-        draw_widget.points = ([point])
-
+      
     def connectingWiimote(self, btAddr):
         addr = btAddr
         name = None
@@ -42,47 +39,67 @@ class DrawingRecognizer(QtWidgets.QWidget):
         for i in template.templates:
             self.recognition.addTemplate(i)
 
+    def getScoords(self, state):
+        # bubblesort from: https://www.geeksforgeeks.org/python-program-for-bubble-sort/
+        n = len(state)
+        for i in range(n):
+            for j in range(0, n-i-1):
+                if state[j]['x'] > state[j+1]['x']:
+                    state[j], state[j+1] = state[j+1], state[j]
+
+        # start points from top left corner counter-clockwise
+        if state[0]['y'] < state[1]['y']:
+            state[0], state[1] = state[1], state[0]
+
+        if state[2]['y'] > state[3]['y']:
+            state[2], state[3] = state[3], state[2]
+
+        A = (state[0]['x'], state[0]['y'])
+        B = (state[1]['x'], state[1]['y'])
+        C = (state[2]['x'], state[2]['y'])
+        D = (state[3]['x'], state[3]['y'])
+        
+        scoords = [A, B, C, D]
+        return scoords
+
+    # hold down 'A'-Button to draw
     def gameInterface(self):
-        self.draw = False
         drawing_points = []
         while True:
             QtGui.QGuiApplication.processEvents()
             if self.wm.buttons["A"]:
-                self.draw = not self.draw
-                print("A")
-            if self.draw:
+
                 state = self.wm.ir.get_state()
                 if len(state) == 4:
-                    A = (state[3]['x'], state[3]['y'])
-                    B = (state[0]['x'], state[0]['y'])
-                    C = (state[1]['x'], state[1]['y'])
-                    D = (state[2]['x'], state[2]['y'])
-                    scoords = [A, B, C, D]
 
+                    scoords = self.getScoords(state)
                     point = self.transformation.getActualCoordinates(scoords)
-                    point = (point[0], point[1])
-                    drawing_points.append(point)
-                    print(point)
-                    self.draw_widget.points = (drawing_points)
-                    self.draw_widget.update()
-            else: 
+                    point = (point[0], 800-point[1])
+
+                    # check if calculated point is range of DrawableObject
+                    if not (point[0] > 800 or point[0] < 0 or point[1] > 800 or point[1] < 0):
+                        drawing_points.append(point)
+                        self.draw_widget.points = (drawing_points)
+                        self.draw_widget.update()
+            else:
                 drawing_points = []
 
             time.sleep(0.1)
 
     def recognition(self):
         self.predicted_label.setText("Compiling..")
+
         QtGui.QGuiApplication.processEvents()
 
         points = self.draw_widget.points
         if len(points) > 0:
-           
             sample = self.recognition.recognize(points)[0]
-
             if sample is None:
                 text = "~None~"
+
             else:
                 text = sample.name
+
         else:
             text = "~None~"
         

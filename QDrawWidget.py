@@ -1,3 +1,5 @@
+# Code from Hahn, Jürgen (University of Regensburg)
+
 from pyqtgraph.Qt import QtGui, QtCore, QtWidgets
 
 

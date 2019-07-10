@@ -1,5 +1,6 @@
 # Code for $1 recognizer from Github: https://github.com/PetaPetaPeta/dollar-one-recognizer-python
 # like referenced in http://www.cs.columbia.edu/~coms6998-11/papers/dollargestures.pdf
+# and modified by Jan Rankenhon and Maximilian Kögl to work in Python3
 
 import numpy as np
 import numpy.linalg as linalg
